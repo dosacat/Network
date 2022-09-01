@@ -1,0 +1,41 @@
+{% extends "network/layout.html" %}
+
+
+{% if user.is_authenticated %}
+    {% block body %}
+        <div class="container-fluid" id="profile-top">
+            <div style="font-size: x-large;">{{ usern.username }}'s profile</div>
+            <div class="top-bar">
+                <!-- <div class=profile>Followers:{{ followers}}</div> -->
+                <div class="profile">Following: {{ following }}</div>
+                <form  method="post" action="{% url 'all' usern.username %}">
+                    {% csrf_token %}
+                {% if follow %}
+                    {% if followed %}
+                        <button style="border-radius:10px;" name="button" type="submit" value="follow">Follow!</button>
+                    {% else %}
+                        <button style="border-radius:10px;" name="button" type="submit" value="unfollow">Unfollow!</button>
+                    {% endif %}
+                {% endif %}
+                </form>
+            </div>
+            
+
+        </div>
+        <div class="container-fluid mt-5" id="feed">
+            {% for post in posts %}
+                <div id="look" class="container-fluid shadow  p-4 my-2 rounded">
+                    <p>{{ usern.username }}</p>
+                    <p>{{ post.content }}</p>
+                    <p>{{ posts.likes }}</p>
+                    <p>{{ post.timestamp }} </p>
+                    <p>0 likes</p>
+                </div>
+            {% endfor %}
+
+        </div>
+
+    {% endblock %}
+{% endif %}
+
+

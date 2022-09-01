@@ -1,0 +1,44 @@
+
+{% extends "network/layout.html" %}
+{% load static %}
+{% block body %}
+
+{% if user.is_authenticated %}
+    <div  class="heading"><h4>Your feed</h4></div>
+    <div style="background-color: rgb(234, 240, 243);"class="container-fluid p-3 my-2 border border-light shadow ">
+
+        <form action="{% url 'post' %}" method="POST">
+            {% csrf_token %}
+            <div class="form-group">
+              <label for="post">New Post:</label>
+              <textarea name="content" style="resize: none;" class="form-control" id="post" placeholder="What's on your mind..." rows="2"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary" style="background-color:#58a3d8 ;">Submit</button>
+          </form>
+    </div>
+
+    <div class="container-fluid mt-5" id="feed">
+        {% for post in posts %}
+            <div id="look" class="container-fluid shadow  p-4 my-2 rounded">
+                <p><a href="{% url 'all' post.user.username %}">{{ post.user.username }}</a></p>
+                <p>{{ post.content }}</p>
+                <p>{{ posts.likes }}</p>
+                <p>{{ post.timestamp }} </p>
+                <!-- <p><buton name="like" id="like" type="click" onclick="likepost({{ post.id }})">0 likes</buton></p>
+                <p><buton name="unlike" id="unlike" type="click">0 likes</buton></p> -->
+            </div>
+        {% endfor %}
+
+    </div>
+
+{% else %}
+    <div class="empty">
+        You're one step closer to the network.
+        <p>Sign up today!</p>
+    </div>
+{% endif %}
+     
+<!-- {% endblock %}
+{% block script %}
+    <script src="{% static 'network/interaction.js' %}"></script> -->
+{% endblock %}
